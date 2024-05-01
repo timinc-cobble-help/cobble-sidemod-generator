@@ -3,7 +3,7 @@ const toLowerCase = s => s.split(" ").map(e => e.toLowerCase()).join("");
 const toUpperCase = s => s.split(" ").map(e => `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`).join("");
 const toCamelCase = s => {
     const upperCase = toUpperCase(s);
-    return `${upperCase[0].toLowerCase}${upperCase.slice(1)}`
+    return `${upperCase[0].toLowerCase()}${upperCase.slice(1)}`
 };
 
 async function modifyAndDownloadZip(authorNameInput, sideModInput, descriptionInput, versionInput, loaderInput) {
