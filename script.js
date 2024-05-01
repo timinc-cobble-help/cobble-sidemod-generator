@@ -51,7 +51,7 @@ async function modifyAndDownloadZip(authorNameInput, sideModInput, descriptionIn
     createdZip.generateAsync({ type: "blob" }).then(function (content) {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(content);
-        a.download = "modified_repo.zip";
+        a.download = `${context.sideMod}.zip`;
         a.click();
     });
 }
