@@ -5,6 +5,7 @@ const toCamelCase = s => {
     const upperCase = toUpperCase(s);
     return `${upperCase[0].toLowerCase()}${upperCase.slice(1)}`
 };
+const toSnakeCase = s => s.split(" ").map(e => e.toLowerCase()).join("_");
 
 async function modifyAndDownloadZip(authorNameInput, sideModInput, descriptionInput, versionInput, loaderInput) {
     const repoUrl = `https://github.com/timinc-cobble/tims-cobblemon-sidemod-template-${versionInput}-${loaderInput}`;
@@ -21,6 +22,7 @@ async function modifyAndDownloadZip(authorNameInput, sideModInput, descriptionIn
 
     const context = {
         authorname: toLowerCase(authorNameInput),
+        side_mod: toSnakeCase(sideModInput),
         sidemod: toLowerCase(sideModInput),
         SideMod: toUpperCase(sideModInput),
         "side-mod": toKebabCase(sideModInput),
@@ -34,15 +36,16 @@ async function modifyAndDownloadZip(authorNameInput, sideModInput, descriptionIn
         const repoFile = repoZip.files[repoFileNameI];
         if (repoFile.dir) continue;
         const repoFileName = Handlebars.compile(repoFileNameI)(context).replace("tims-cobblemon-sidemod-template", context["side-mod"]).replace("-main", "");
-        const repoFileContent = await repoFile.async("text");
-
+        
         try {
             const createFileName = repoFileName;
+            const repoFileContent = await repoFile.async("text");
             const createFileContent = Handlebars.compile(repoFileContent)(context);
             createdZip.file(createFileName, createFileContent);
             console.log(`Successfully translated file ${createFileName}`)
         } catch (error) {
             console.log(error);
+            const repoFileContent = await repoFile.async("base64");
             createdZip.file(repoFileName, repoFileContent);
             console.log(`Successfully copied file ${repoFileName}`)
         }
