@@ -1,27 +1,58 @@
+const toKebabCase = s => s.split(" ").map(e => e.toLowerCase()).join("-");
+const toLowerCase = s => s.split(" ").map(e => e.toLowerCase()).join("");
+const toUpperCase = s => s.split(" ").map(e => `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`).join("");
+const toCamelCase = s => {
+    const upperCase = toUpperCase(s);
+    return `${upperCase[0].toLowerCase}${upperCase.slice(1)}`
+};
+
 async function modifyAndDownloadZip() {
     const repoUrl = document.getElementById('repoUrl').value;
-    const fileName = document.getElementById('fileName').value;
-    const fileContent = document.getElementById('fileContent').value;
+    const repoZipUrl = repoUrl.replace(/(https:\/\/github\.com\/)(.+)/, '$1$2/archive/refs/heads/main.zip');
+    const repoProxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(repoZipUrl)}`;
 
-    // Convert GitHub repo link to a ZIP download link
-    const zipUrl = repoUrl.replace(/(https:\/\/github\.com\/)(.+)/, '$1$2/archive/refs/heads/main.zip');
+    const repoResponse = await fetch(repoProxyUrl);
+    const repoBlob = await repoResponse.blob();
 
-    // AllOrigins proxy
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(zipUrl)}`;
+    const repoZip = new JSZip();
+    await repoZip.loadAsync(repoBlob, {
+        checkCRC32: true
+    });
 
-    // Use AllOrigins proxy
-    const response = await fetch(proxyUrl);
-    const blob = await response.blob();
+    const authorNameInput = "Timothy Metcalfe";
+    const sideModInput = "Some Mod";
+    const descriptionInput = "This is some mod, isn't it sweet?"
 
-    // Load ZIP file with JSZip
-    const jsZip = new JSZip();
-    const zip = await jsZip.loadAsync(blob);
+    const context = {
+        authorname: toLowerCase(authorNameInput),
+        sidemod: toLowerCase(sideModInput),
+        SideMod: toUpperCase(sideModInput),
+        "side-mod": toKebabCase(sideModInput),
+        Side_Mod: sideModInput,
+        sideMod: toCamelCase(sideModInput),
+        description: descriptionInput,
+    }
 
-    // Add a new file or modify existing ones
-    zip.file(fileName, fileContent);
+    const createdZip = new JSZip();
+    for (let repoFileNameI in repoZip.files) {
+        const repoFile = repoZip.files[repoFileNameI];
+        if (repoFile.dir) continue;
+        const repoFileName = Handlebars.compile(repoFileNameI)(context).replace("tims-cobblemon-sidemod-template", context["side-mod"]).replace("-main", "");
+        const repoFileContent = await repoFile.async("text");
 
-    // Generate the modified ZIP file and trigger download
-    zip.generateAsync({ type: "blob" }).then(function (content) {
+        try {
+            const createFileName = repoFileName;
+            const createFileContent = Handlebars.compile(repoFileContent)(context);
+            createdZip.file(createFileName, createFileContent);
+            console.log(`Successfully translated file ${createFileName}`)
+        } catch (error) {
+            console.log(error);
+            createdZip.file(repoFileName, repoFileContent);
+            console.log(`Successfully copied file ${repoFileName}`)
+        }
+    }
+
+    createdZip.generateAsync({ type: "blob" }).then(function (content) {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(content);
         a.download = "modified_repo.zip";
