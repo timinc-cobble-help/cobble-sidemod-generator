@@ -6,8 +6,8 @@ const toCamelCase = s => {
     return `${upperCase[0].toLowerCase}${upperCase.slice(1)}`
 };
 
-async function modifyAndDownloadZip() {
-    const repoUrl = document.getElementById('repoUrl').value;
+async function modifyAndDownloadZip(authorNameInput, sideModInput, descriptionInput, versionInput, loaderInput) {
+    const repoUrl = `https://github.com/timinc-cobble/tims-cobblemon-sidemod-template-${versionInput}-${loaderInput}`;
     const repoZipUrl = repoUrl.replace(/(https:\/\/github\.com\/)(.+)/, '$1$2/archive/refs/heads/main.zip');
     const repoProxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(repoZipUrl)}`;
 
@@ -18,10 +18,6 @@ async function modifyAndDownloadZip() {
     await repoZip.loadAsync(repoBlob, {
         checkCRC32: true
     });
-
-    const authorNameInput = "Timothy Metcalfe";
-    const sideModInput = "Some Mod";
-    const descriptionInput = "This is some mod, isn't it sweet?"
 
     const context = {
         authorname: toLowerCase(authorNameInput),
@@ -60,5 +56,9 @@ async function modifyAndDownloadZip() {
     });
 }
 
-const downloadButton = document.querySelector("#download-btn");
-downloadButton.addEventListener("click", modifyAndDownloadZip);
+const projectForm = document.querySelector("#project-form");
+projectForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target;
+    modifyAndDownloadZip(form.author.value, form.sidemod.value, form.description.value, form.version.value, form.loader.value);
+});

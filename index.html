@@ -1,18 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Modify GitHub Repo ZIP</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-<script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <title>Modify GitHub Repo ZIP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="script.js" defer></script>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 40rem;
+            margin: 0 auto;
+        }
+
+        form label {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
+
 <body>
-    <form id="repoForm">
-        <input type="text" id="repoUrl" placeholder="Enter GitHub Repo URL">
-        <input type="text" id="fileName" placeholder="File Name to Add">
-        <input type="text" id="fileContent" placeholder="File Content">
-        <button type="button" id="download-btn">Download Modified ZIP</button>
+    <form id="project-form">
+        <label>
+            <span>Author's Name</span>
+            <input name="author" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$"
+                placeholder="Letters and numbers with spaces. Cannot begin with a number." />
+        </label>
+        <label>
+            <span>Sidemod Name</span>
+            <input name="sidemod" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$"
+                placeholder="Letters and numbers with spaces. Cannot begin with a number." />
+        </label>
+        <label>
+            <span>Cobblemon Version</span>
+            <select name="version" required>
+                <option value="">Please select</option>
+                <option>1.4</option>
+            </select>
+        </label>
+        <label>
+            <span>Minecraft Modloader</span>
+            <select name="loader" required>
+                <option value="">Please select</option>
+                <option>forge</option>
+            </select>
+        </label>
+        <label>
+            <span>Sidemod Description</span>
+            <textarea name="description" required rows="10"></textarea>
+        </label>
+        <button id="download-btn">Download Personalized Sidemod Starter</button>
     </form>
 </body>
+
 </html>
