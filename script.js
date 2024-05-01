@@ -3,11 +3,14 @@ async function modifyAndDownloadZip() {
     const fileName = document.getElementById('fileName').value;
     const fileContent = document.getElementById('fileContent').value;
 
+    // CORS proxy
+    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+
     // Convert GitHub repo link to a ZIP download link
     const zipUrl = repoUrl.replace(/(https:\/\/github\.com\/)(.+)/, '$1$2/archive/refs/heads/main.zip');
 
-    // Fetch the ZIP file
-    const response = await fetch(zipUrl);
+    // Use CORS proxy
+    const response = await fetch(corsProxy + zipUrl);
     const blob = await response.blob();
 
     // Load ZIP file with JSZip
