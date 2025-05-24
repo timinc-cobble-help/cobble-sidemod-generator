@@ -37,7 +37,6 @@ async function modifyAndDownloadZip(
   const createdZip = new JSZip();
   for (let repoFileNameI in repoZip.files) {
     const repoFile = repoZip.files[repoFileNameI];
-    console.log(repoFile);
     if (repoFile.dir) continue;
     const repoFileName = Handlebars.compile(repoFileNameI)(context)
       .replace("tims-cobblemon-sidemod-template", `${context.sideMod.kebabCase}`)
