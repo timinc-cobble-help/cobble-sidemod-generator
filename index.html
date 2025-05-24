@@ -3,10 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Modify GitHub Repo ZIP</title>
+    <title>Cobblemon Mod Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script src="script.js" defer></script>
+    <script src="casemaster.js"></script>
+    <script src="run.js" defer></script>
+    <script src="form.js" defer></script>
     <style>
         form {
             display: flex;
@@ -37,18 +39,31 @@
                 placeholder="Letters and numbers with spaces. Cannot begin with a number." />
         </label>
         <label>
+            <span>Author's Handle</span>
+            <input name="authorhandle" required pattern="^[a-z]+$" placeholder="Lowercase letters." />
+        </label>
+        <label>
+            <span>Sidemod Package</span>
+            <input name="package" required pattern="^[a-z\-_\.]+$" placeholder="Lowercase letters with dots, dashes and underscores." />
+        </label>
+        <label>
             <span>Cobblemon Version</span>
             <select name="version" required>
                 <option value="">Please select</option>
-                <option>1.4</option>
+                <option>1.6</option>
             </select>
         </label>
         <label>
             <span>Minecraft Modloader</span>
             <select name="loader" required>
                 <option value="">Please select</option>
-                <option>forge</option>
+                <option>fabric</option>
+                <option>neoforge</option>
             </select>
+        </label>
+        <label>
+            <span>License</span>
+            <input name="license" value="MIT" />
         </label>
         <label>
             <span>Sidemod Description</span>
