@@ -40,7 +40,7 @@ async function modifyAndDownloadZip(
     console.log(repoFile);
     if (repoFile.dir) continue;
     const repoFileName = Handlebars.compile(repoFileNameI)(context)
-      .replace("tims-cobblemon-sidemod-template", context["side-mod"])
+      .replace("tims-cobblemon-sidemod-template", `${context.sideMod.kebabCase}`)
       .replace("-main", "");
 
     try {
@@ -60,7 +60,7 @@ async function modifyAndDownloadZip(
   createdZip.generateAsync({ type: "blob" }).then(function (content) {
     const a = document.createElement("a");
     a.href = URL.createObjectURL(content);
-    a.download = `${context.sideMod}.zip`;
+    a.download = `${context.sideMod.lowerCase}-${versionInput}-${loaderInput}.zip`;
     a.click();
   });
 }
