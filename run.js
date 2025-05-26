@@ -39,7 +39,7 @@ async function modifyAndDownloadZip(
     const repoFile = repoZip.files[repoFileNameI];
     if (repoFile.dir) continue;
     const repoFileName = Handlebars.compile(repoFileNameI)(context)
-      .replace("tims-cobblemon-sidemod-template", `cobblemon-${context.sideMod.kebabCase}`)
+      .replace("tims-cobblemon-sidemod-template", `cobblemon-${context.sideMod.lowerCase}`)
       .replace("-main", "");
 
     try {
