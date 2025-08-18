@@ -8,16 +8,24 @@ async function modifyAndDownloadZip(
   licenseInput,
   packageInput
 ) {
-  const repoUrl = `https://github.com/timinc-cobble-help/tims-cobblemon-sidemod-template-${versionInput}-${loaderInput}`;
-  const repoZipUrl = repoUrl.replace(
-    /(https:\/\/github\.com\/)(.+)/,
-    "$1$2/archive/refs/heads/main.zip"
-  );
-  const repoProxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(
-    repoZipUrl
-  )}`;
+  const repoUrl = `https://github.com/timinc-cobble-help/tims-cobblemon-sidemod-template-{version}-{loader}/archive/refs/heads/main.zip`;
 
-  const repoResponse = await fetch(repoProxyUrl);
+  const repoZipUrl = URI.expand(
+      repoUrl,
+      {
+        version: versionInput,
+        loader: loaderInput,
+      }
+  )
+
+  const repoProxyUrl = URI.expand(
+      "https://api.allorigins.win/raw?url={target}",
+      {
+        target: repoZipUrl.toString(),
+      }
+  );
+
+  const repoResponse = await fetch(repoProxyUrl.toString());
   const repoBlob = await repoResponse.blob();
 
   const repoZip = new JSZip();
@@ -56,26 +64,25 @@ async function modifyAndDownloadZip(
     }
   }
 
-  createdZip.generateAsync({ type: "blob" }).then(function (content) {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(content);
-    a.download = `${context.sideMod.lowerCase}-${versionInput}-${loaderInput}.zip`;
-    a.click();
-  });
+  const zip = await createdZip.generateAsync({ type: "blob" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(zip);
+  a.download = `${context.sideMod.lowerCase}-${versionInput}-${loaderInput}.zip`;
+  a.click();
 }
 
 const projectForm = document.querySelector("#project-form");
-projectForm.addEventListener("submit", (e) => {
+projectForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.target;
-  modifyAndDownloadZip(
-    form.author.value,
-    form.authorhandle.value,
-    form.sidemod.value,
-    form.description.value,
-    form.version.value,
-    form.loader.value,
-    form.license.value,
-    form.package.value
+  await modifyAndDownloadZip(
+      form.author.value,
+      form.authorhandle.value,
+      form.sidemod.value,
+      form.description.value,
+      form.version.value,
+      form.loader.value,
+      form.license.value,
+      form.package.value
   );
 });

@@ -2,41 +2,58 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Cobblemon Sidemod Generator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script src="casemaster.js"></script>
-    <script src="run.js" defer></script>
-    <script src="form.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.11/URI.min.js"></script>
+    <script src="/casemaster.js"></script>
+    <script src="/run.js" defer></script>
+    <script src="/form.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.1.1/pico.amber.min.css">
     <style>
+        :root {
+            --pico-line-height: 1.15;
+        }
         form {
-            display: flex;
-            flex-direction: column;
             max-width: 40rem;
             margin: 0 auto;
         }
-
-        form label {
-            display: flex;
-            flex-direction: column;
+        #download-btn {
+            margin: 0 auto;
+            display: block;
         }
     </style>
 </head>
-
 <body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Tim's Quick and Easy Sidemod Starter Code Maker</strong></li>
+        </ul>
+        <ul>
+            <li><a href="https://github.com/timinc-cobble-help/cobble-sidemod-generator" target="_blank">Github</a></li>
+        </ul>
+    </nav>
+</header>
+<main class="container">
     <form id="project-form">
-        <h1>Tim's Quick and Easy Sidemod Starter Code Maker</h1>
-        <p>It fills out a bunch of stuff for you so you don't have to dig around looking for it.</p>
+        <section class="description">
+            <article>
+                It fills out a bunch of stuff for you so you don't have to dig around looking for it.
+            </article>
+        </section>
         <label>
             <span>Author's Name</span>
             <input name="author" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$"
-                placeholder="Letters and numbers with spaces. Cannot begin with a number." />
+                   placeholder="Letters and numbers with spaces. Cannot begin with a number." />
         </label>
         <label>
             <span>Sidemod Name</span>
-            <input name="sidemod" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$"
-                placeholder="Letters and numbers with spaces. Cannot begin with a number." />
+            <input name="sidemod" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$" autocomplete="off"
+                   placeholder="Letters and numbers with spaces. Cannot begin with a number." />
         </label>
         <label>
             <span>Author's Handle</span>
@@ -44,7 +61,8 @@
         </label>
         <label>
             <span>Sidemod Package</span>
-            <input name="package" required pattern="^[a-z\-_\.]+$" placeholder="Lowercase letters with dots, dashes and underscores." />
+            <input name="package" required pattern="^[a-z\-_\.]+$" autocomplete="off"
+                   placeholder="Lowercase letters with dots, dashes and underscores." />
         </label>
         <label>
             <span>Cobblemon Version</span>
@@ -72,6 +90,6 @@
         </label>
         <button id="download-btn">Download Personalized Sidemod Starter</button>
     </form>
+</main>
 </body>
-
 </html>
