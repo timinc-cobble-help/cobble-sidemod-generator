@@ -33,6 +33,9 @@ async function modifyAndDownloadZip(
     checkCRC32: true,
   });
 
+  const licenseText = await LicenseMaster.getText(licenseInput);
+  console.log(licenseText);
+
   const context = {
     authorName: CaseMaster(authorNameInput),
     authorHandle: CaseMaster(authorHandleInput),
@@ -40,7 +43,9 @@ async function modifyAndDownloadZip(
     description: CaseMaster(descriptionInput),
     license: CaseMaster(licenseInput),
     package: CaseMaster(packageInput),
+    licenseText: CaseMaster(licenseText)
   };
+  console.log(context);
 
   const createdZip = new JSZip();
   for (let repoFileNameI in repoZip.files) {
@@ -81,7 +86,7 @@ projectForm.addEventListener("submit", async (e) => {
       form.sidemod.value,
       form.description.value,
       form.version.value,
-      form.loader.value,
+      "multiplatform",
       form.license.value,
       form.package.value
   );

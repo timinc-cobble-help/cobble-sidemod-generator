@@ -9,9 +9,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.11/URI.min.js"></script>
+    <script src="/licenses.js" defer></script>
     <script src="/casemaster.js"></script>
     <script src="/run.js" defer></script>
-    <script src="/form.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.1.1/pico.amber.min.css">
     <style>
         :root {
@@ -52,45 +52,40 @@
             <label>
                 <span>Author's Name</span>
                 <input name="author" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$"
-                    placeholder="Letters and numbers with spaces. Cannot begin with a number." />
+                    placeholder="Your Name Here" />
             </label>
             <label>
                 <span>Sidemod Name</span>
                 <input name="sidemod" required pattern="^[a-zA-Z\s]+[a-zA-Z0-9\s]+$" autocomplete="off"
-                    placeholder="Letters and numbers with spaces. Cannot begin with a number." />
+                    placeholder="Your Mod's Name Here" />
             </label>
             <label>
                 <span>Author's Handle</span>
-                <input name="authorhandle" required pattern="^[a-z]+$" placeholder="Lowercase letters." />
+                <input name="authorhandle" required pattern="^[a-z]+$" placeholder="Your author alias here, if you have one" />
             </label>
             <label>
                 <span>Sidemod Package</span>
                 <input name="package" required pattern="^[a-z\-_\.]+$"
-                    placeholder="Lowercase letters with dots, dashes and underscores." />
+                    placeholder="us.timinc.mc.cobblemon, for example" />
             </label>
             <label>
                 <span>Cobblemon Version</span>
                 <select name="version" required>
                     <option value="">Please select</option>
                     <option>1.6.1</option>
-                </select>
-            </label>
-            <label>
-                <span>Minecraft Modloader</span>
-                <select name="loader" required>
-                    <option value="">Please select</option>
-                    <option>fabric</option>
-                    <option>neoforge</option>
-                    <option>multiplatform</option>
+                    <option>1.7.0</option>
                 </select>
             </label>
             <label>
                 <span>License</span>
-                <input name="license" value="MIT" />
+                 <select name="license" required>
+                    <option value="">Please select</option>
+                 </select>
+                 <pre id="license-text">None selected...</pre>
             </label>
             <label>
                 <span>Sidemod Description</span>
-                <textarea name="description" required rows="10"></textarea>
+                <textarea name="description" required rows="10" autocomplete="off"></textarea>
             </label>
             <button id="download-btn">Download Personalized Sidemod Starter</button>
         </form>
